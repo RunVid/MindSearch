@@ -377,6 +377,8 @@ class MindSearchAgent(BaseAgent):
         ordered_nodes = []
         active_node = None
 
+        producer_thread.join()
+
         while True:
             try:
                 item = self.local_dict.get('graph').searcher_resp_queue.get(
@@ -418,5 +420,5 @@ class MindSearchAgent(BaseAgent):
             except queue.Empty:
                 if not producer_thread.is_alive():
                     break
-        producer_thread.join()
+        
         return
