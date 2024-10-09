@@ -43,6 +43,7 @@ app.add_middleware(CORSMiddleware,
 class GenerationParams(BaseModel):
     inputs: Union[str, List[Dict]]
     agent_cfg: Dict = dict()
+    llm_max_new_tokens: int = 8192
 
 
 @app.post('/solve')
@@ -127,10 +128,12 @@ async def run(request: GenerationParams):
             await queue.wait_closed()
 
     inputs = request.inputs
-    agent = init_agent(lang=args.lang, model_format=args.model_format,search_engine=args.search_engine)
+    llm_max_new_tokens = request.llm_max_new_tokens if hasattr(
+        request, 'llm_max_new_tokens') else 8192
+    agent = init_agent(lang=args.lang, model_format=args.model_format,search_engine=args.search_engine,llm_max_new_tokens=llm_max_new_tokens)
     return EventSourceResponse(generate())
 
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8002, log_level='info')
+    uvicorn.run("mindsearch.app:app", host='0.0.0.0', port=8002, log_level='info', workers=5)
