@@ -1,7 +1,7 @@
 duckduckgo_search==5.3.1b1
 einops
 fastapi
-git+https://github.com/InternLM/lagent.git
+git+https://github.com/Jim0v0/lagent.git
 gradio
 janus
 lmdeploy
@@ -11,3 +11,4 @@ termcolor
 transformers==4.41.0
 uvicorn
 python-dotenv
+class_registry==2.1.2

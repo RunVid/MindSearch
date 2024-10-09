@@ -17,13 +17,14 @@ from mindsearch.agent.mindsearch_prompt import (
 LLM = {}
 
 
-def init_agent(lang='cn', model_format='internlm_server',search_engine='DuckDuckGoSearch'):
+def init_agent(lang='cn', model_format='internlm_server',search_engine='DuckDuckGoSearch', llm_max_new_tokens=8192):
     llm = LLM.get(model_format, None)
     if llm is None:
         llm_cfg = getattr(llm_factory, model_format)
         if llm_cfg is None:
             raise NotImplementedError
         llm_cfg = llm_cfg.copy()
+        llm_cfg['max_new_tokens'] = llm_max_new_tokens
         llm = llm_cfg.pop('type')(**llm_cfg)
         LLM[model_format] = llm
 
