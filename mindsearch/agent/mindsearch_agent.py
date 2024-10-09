@@ -357,7 +357,10 @@ class MindSearchAgent(BaseAgent):
 
         def run_command(cmd):
             try:
+                logging.warning(f'Executing command: {cmd}')
+                logging.warning(f'Local dict before exec: {self.local_dict}')
                 exec(cmd, globals(), self.local_dict)
+                logging.warning(f'Local dict after exec: {self.local_dict}')
                 plan_graph = self.local_dict.get('graph')
                 assert plan_graph is not None
                 for future in as_completed(plan_graph.future_to_query):
